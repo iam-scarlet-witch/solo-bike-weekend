@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solo Bike Weekend | Shillong Cinematic Journey</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --lavender: #E6E6FA;
+            --soft-lavender: #D8BFD8;
+            --lavender-dark: #9F7AEA;
+            --cool-blue: #4A5568;
+            --mountain-blue: #2D3748;
+            --soft-white: #F7F7F7;
+            --text-color: #2D3748;
+            --text-light: #718096;
+            --bg-gradient: linear-gradient(135deg, #F8F7FF 0%, #E8E4F0 50%, #E6D5F0 100%);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(247, 247, 247, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(159, 122, 234, 0.1);
+        }
+
+        .logo {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            font-weight: 400;
+            color: var(--mountain-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover { color: var(--lavender-dark); }
+
+        /* Hero Section (with image) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+
+            /* Hero image + soft overlay */
+            background:
+              linear-gradient(rgba(45, 55, 72, 0.45), rgba(45, 55, 72, 0.35)),
+              url('images/hero.jpg') center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="0.8" fill="rgba(159,122,234,0.04)"/><circle cx="75" cy="75" r="0.8" fill="rgba(159,122,234,0.04)"/><circle cx="50" cy="50" r="0.6" fill="rgba(159,122,234,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 10px;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .hero .subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            color: rgba(230, 230, 250, 0.95);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero .tagline {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero .location {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 2rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 1;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 20px;
+            height: 30px;
+            border: 2px solid rgba(230, 230, 250, 0.9);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            width: 4px;
+            height: 8px;
+            background: rgba(230, 230, 250, 0.9);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { opacity: 1; top: 6px; }
+            100% { opacity: 0; top: 16px; }
+        }
+
+        /* Section Styles */
+        section { padding: 6rem 4rem; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: var(--mountain-blue);
+            margin-bottom: 1rem;
+        }
+
+        .section-title .divider {
+            width: 60px;
+            height: 1px;
+            background: var(--lavender-dark);
+            margin: 0 auto;
+        }
+
+        /* Trailer / Video section */
+        .trailer {
+            background: rgba(255, 255, 255, 0.55);
+        }
+
+        .trailer-wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(159, 122, 234, 0.12);
+            border: 1px solid rgba(159, 122, 234, 0.12);
+        }
+
+        .trailer-wrap video {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #000;
+        }
+
+        /* About Section */
+        .about { background: rgba(255, 255, 255, 0.5); }
+
+        .about-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* Video Scenes Grid */
+        .scenes {
+            background: linear-gradient(180deg, rgba(232, 228, 240, 0.3) 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        .scenes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .scene-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(159, 122, 234, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .scene-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(159, 122, 234, 0.15);
+        }
+
+        /* Scene image now supports real photos */
+        .scene-image {
+            height: 180px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scene-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(159, 122, 234, 0.12) 0%, rgba(45, 55, 72, 0.12) 100%);
+        }
+
+        .scene-info { padding: 1.5rem; }
+
+        .scene-info h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--mountain-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .scene-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        /* Bike Feature Section */
+        .bike-feature { background: rgba(255, 255, 255, 0.6); }
+
+        .bike-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        /* Bike visual now uses an image */
+        .bike-visual {
+            width: 350px;
+            height: 220px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            background:
+              linear-gradient(180deg, rgba(45,55,72,0.10), rgba(45,55,72,0.25)),
+              url('images/bike.jpg') center/cover no-repeat;
+            box-shadow: 0 10px 40px rgba(159, 122, 234, 0.12);
+            border: 1px solid rgba(159, 122, 234, 0.12);
+        }
+
+        .bike-details { max-width: 400px; }
+
+        .bike-details h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: var(--mountain-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .bike-details ul { list-style: none; }
+
+        .bike-details li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(159, 122, 234, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bike-details li::before {
+            content: '✦';
+            color: var(--lavender-dark);
+            font-size: 0.7rem;
+        }
+
+        /* Text Overlays Section */
+        .overlays {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(232, 228, 240, 0.3) 100%);
+        }
+
+        .overlays-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .overlay-item {
+            text-align: center;
+            padding: 1.5rem 2.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(159, 122, 234, 0.08);
+        }
+
+        .overlay-item h4 {
+            font-size: 1.2rem;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--mountain-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .overlay-item span {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--lavender-dark);
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Technical Specs */
+        .tech-specs { background: rgba(255, 255, 255, 0.6); }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .spec-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .spec-card:hover { transform: scale(1.05); }
+
+        .spec-card h4 {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--lavender-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-card p {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Production Notes */
+        .production {
+            background: linear-gradient(180deg, rgba(232, 228, 240, 0.3) 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        .production-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .production-block {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+              .production-block h4 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--mountain-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(159, 122, 234, 0.2);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .production-block p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 300;
+            line-height: 1.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--mountain-blue);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+
+        footer .credits {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            text-transform: none;
+            letter-spacing: 1px;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                letter-spacing: 5px;
+            }
+
+            .hero .subtitle {
+                font-size: 0.75rem;
+                letter-spacing: 4px;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .bike-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SOLO BIKE WEEKEND</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#trailer">Trailer</a></li>
+            <li><a href="#scenes">Scenes</a></li>
+            <li><a href="#bike">Bike</a></li>
+            <li><a href="#overlays">Overlays</a></li>
+            <li><a href="#production">Production</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="top">
+        <div class="hero-content">
+            <h1>SOLO BIKE WEEKEND</h1>
+            <p class="subtitle">A Cinematic Journey</p>
+            <p class="tagline">"Ride slow. Breathe deep."</p>
+            <p class="location">Shillong, Meghalaya</p>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Trailer / Video Embed -->
+    <section class="trailer" id="trailer">
+        <div class="section-title">
+            <h2>Trailer</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="trailer-wrap">
+            <!-- Put your MP4 at: video/solo-bike-weekend.mp4 -->
+            <video controls playsinline preload="metadata" poster="images/hero.jpg">
+                <source src="video/solo-bike-weekend.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-title">
+            <h2>About This Project</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="about-content">
+            <p>
+                A peaceful solo motorcycle journey through the misty hills of Shillong, Meghalaya.
+                This cinematic travel video captures the essence of slow travel, reflection,
+                and connection with nature.
+            </p>
+            <p>
+                Every frame is designed to feel calm and aesthetic, with soft lavender tones,
+                smooth camera movement, and the quiet companionship of a blue Yamaha R15.
+            </p>
+        </div>
+    </section>
+
+    <!-- Video Scenes -->
+    <section class="scenes" id="scenes">
+        <div class="section-title">
+            <h2>Video Scenes</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="scenes-grid">
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/madanryting.jpg');"
+                     role="img"
+                     aria-label="Early morning misty road in Madanryting, Shillong"></div>
+                <div class="scene-info">
+                    <h3>1. Madanryting Mist</h3>
+                    <p>Early morning ride through foggy roads</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/shillong-peak.jpg');"
+                     role="img"
+                     aria-label="Wide cinematic view of Shillong Peak with slow-moving clouds"></div>
+                <div class="scene-info">
+                    <h3>2. Shillong Peak</h3>
+                    <p>Wide cinematic shot with drifting clouds</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/wards-lake.jpg');"
+                     role="img"
+                     aria-label="Ward's Lake calm water reflections, Shillong"></div>
+                <div class="scene-info">
+                    <h3>3. Ward’s Lake</h3>
+                    <p>Calm reflections on water</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/museum.jpg');"
+                     role="img"
+                     aria-label="Cultural interior visuals inspired by Don Bosco Museum"></div>
+                <div class="scene-info">
+                    <h3>4. Don Bosco Museum</h3>
+                    <p>Cultural interiors and reflections</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/waterfalls.jpg');"
+                     role="img"
+                     aria-label="Waterfall mist and greenery inspired by Sweet Falls and Spread Eagle Falls"></div>
+                <div class="scene-info">
+                    <h3>5. Waterfalls</h3>
+                    <p>Sweet Falls & Spread Eagle Falls mist</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/park.jpg');"
+                     role="img"
+                     aria-label="Quiet garden visuals inspired by Lady Hydari Park"></div>
+                <div class="scene-info">
+                    <h3>6. Lady Hydari Park</h3>
+                    <p>Quiet garden visuals</p>
+                </div>
+            </div>
+
+            <div class="scene-card">
+                <div class="scene-image"
+                     style="background-image:url('images/sunset.jpg');"
+                     role="img"
+                     aria-label="Sunset sky over hills with bike parked for a peaceful ending"></div>
+                <div class="scene-info">
+                    <h3>7. Sunset Finale</h3>
+                    <p>Bike parked, lavender sky, calm fade-out</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bike Feature -->
+    <section class="bike-feature" id="bike">
+        <div class="section-title">
+            <h2>The Bike</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="bike-content">
+            <div class="bike-visual" role="img" aria-label="Blue Yamaha R15 minimal cinematic photo"></div>
+
+            <div class="bike-details">
+                <h3>Yamaha R15 (Blue)</h3>
+                <ul>
+                    <li>Metallic/matte blue finish</li>
+                    <li>Clean stock look (no stickers, no mounts)</li>
+                    <li>No luggage (minimalistic)</li>
+                    <li>Helmeted rider, neutral earth-tone outfit</li>
+                    <li>Slow, mindful riding — no stunts</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Text Overlays -->
+    <section class="overlays" id="overlays">
+        <div class="section-title">
+            <h2>Text Overlays</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="overlays-list">
+            <div class="overlay-item">
+                <h4>"Solo Bike Weekend"</h4>
+                <span>Opening Title</span>
+            </div>
+            <div class="overlay-item">
+                <h4>"Shillong"</h4>
+                <span>Location Title</span>
+            </div>
+            <div class="overlay-item">
+                <h4>"Ride Slow. Breathe Deep."</h4>
+                <span>Mid-journey Mantra</span>
+            </div>
+            <div class="overlay-item">
+                <h4>"Let the hills set the pace."</h4>
+                <span>Closing Message</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs -->
+    <section class="tech-specs">
+        <div class="section-title">
+            <h2>Video Specifications</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="specs-grid">
+            <div class="spec-card">
+                <h4>4K</h4>
+                <p>Resolution</p>
+            </div>
+            <div class="spec-card">
+                <h4>24fps</h4>
+                <p>Frame Rate</p>
+            </div>
+            <div class="spec-card">
+                <h4>16:9</h4>
+                <p>Aspect Ratio</p>
+            </div>
+            <div class="spec-card">
+                <h4>4–5 min</h4>
+                <p>Duration</p>
+            </div>
+            <div class="spec-card">
+                <h4>Lavender</h4>
+                <p>Color Tone</p>
+            </div>
+            <div class="spec-card">
+                <h4>Ambient</h4>
+                <p>Music Style</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Production Notes -->
+    <section class="production" id="production">
+        <div class="section-title">
+            <h2>Production Notes</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="production-content">
+            <div class="production-block">
+                <h4>Creative Lock</h4>
+                <p>
+                    Helmeted rider only, visor down or tinted, no face shown. Neutral earth-tone outfit.
+                    Blue Yamaha R15, clean stock look, no bags, no stickers, no mounts. Slow mindful riding.
+                </p>
+            </div>
+
+            <div class="production-block">
+                <h4>Global Style</h4>
+                <p>
+                    Calm, reflective solo film in Shillong. No crowds, no traffic. Soft lavender + cool mountain tones.
+                    Smooth camera movement, long takes, cinematic dissolves, natural ambience blended with slow ambient music.
+                </p>
+            </div>
+
+            <div class="production-block">
+                <h4>Negative Rules</h4>
+                <p>
+                    No crowds/groups, no busy streets, no shaky cam, no fast cuts, no racing, no stunts,
+                    no readable license plates, no neon oversaturation.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>SOLO BIKE WEEKEND</p>
+        <p class="credits">Shillong, Meghalaya | Cinematic Travel Video</p>
+    </footer>
+</body>
+</html>
