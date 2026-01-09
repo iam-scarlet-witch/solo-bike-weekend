@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,6 +22,23 @@
             --text-color: #2D3748;
             --text-light: #718096;
             --bg-gradient: linear-gradient(135deg, #F8F7FF 0%, #E8E4F0 50%, #E6D5F0 100%);
+            --card-bg: rgba(255, 255, 255, 0.78);
+            --border-color: rgba(159, 122, 234, 0.12);
+            --shadow-color: rgba(159, 122, 234, 0.10);
+            --nav-bg: rgba(247, 247, 247, 0.85);
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1f1b3d 100%);
+            --text-color: #E2E8F0;
+            --text-light: #A0AEC0;
+            --card-bg: rgba(45, 55, 72, 0.75);
+            --border-color: rgba(159, 122, 234, 0.25);
+            --shadow-color: rgba(0, 0, 0, 0.35);
+            --nav-bg: rgba(26, 26, 46, 0.88);
+            --cool-blue: #718096;
+            --mountain-blue: #E2E8F0;
         }
 
         html { scroll-behavior: smooth; }
@@ -32,6 +49,7 @@
             color: var(--text-color);
             line-height: 1.8;
             overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
         /* Navigation */
@@ -44,9 +62,10 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(247, 247, 247, 0.85);
+            background: var(--nav-bg);
             backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(159, 122, 234, 0.1);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.4s ease;
         }
 
         .logo {
@@ -55,6 +74,8 @@
             font-weight: 400;
             color: var(--mountain-blue);
         }
+
+        .logo-link { text-decoration: none; color: inherit; }
 
         .nav-links {
             display: flex;
@@ -74,7 +95,110 @@
 
         .nav-links a:hover { color: var(--lavender-dark); }
 
-        /* Hero Section (with image) */
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(159, 122, 234, 0.18);
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--mountain-blue);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(159, 122, 234, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .icon-btn {
+            background: rgba(45, 55, 72, 0.75);
+            color: var(--lavender);
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(159, 122, 234, 0.15);
+        }
+
+        .hamburger { display: none; }
+
+        /* Mobile Drawer */
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 55, 72, 0.55);
+            display: none;
+            z-index: 1500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-backdrop.open { display: block; opacity: 1; }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: min(360px, 86vw);
+            background: rgba(247, 247, 247, 0.92);
+            backdrop-filter: blur(18px);
+            border-left: 1px solid var(--border-color);
+            transform: translateX(105%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1600;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .drawer { background: rgba(26, 26, 46, 0.95); }
+
+        .drawer.open { transform: translateX(0); }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.25rem 1.25rem 0.25rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .drawer-title {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            color: var(--mountain-blue);
+            font-weight: 500;
+        }
+
+        body.dark-mode .drawer-title { color: var(--lavender); }
+
+        .drawer-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 1rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-link:hover {
+            background: rgba(159, 122, 234, 0.12);
+            color: var(--lavender-dark);
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
@@ -84,11 +208,7 @@
             text-align: center;
             padding: 2rem;
             position: relative;
-
-            /* Hero image + soft overlay */
-            background:
-              linear-gradient(rgba(45, 55, 72, 0.45), rgba(45, 55, 72, 0.35)),
-              url('images/hero.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(45, 55, 72, 0.45), rgba(45, 55, 72, 0.35)), url('images/hero.jpg') center/cover no-repeat;
         }
 
         .hero::before {
@@ -208,10 +328,9 @@
             margin: 0 auto;
         }
 
-        /* Trailer / videos section */
-        .trailer {
-            background: rgba(255, 255, 255, 0.55);
-        }
+        /* Trailer Section */
+        .trailer { background: rgba(255, 255, 255, 0.55); }
+        body.dark-mode .trailer { background: rgba(45, 55, 72, 0.45); }
 
         .trailer-wrap {
             max-width: 1000px;
@@ -219,10 +338,10 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(159, 122, 234, 0.12);
-            border: 1px solid rgba(159, 122, 234, 0.12);
+            border: 1px solid var(--border-color);
         }
 
-        .trailer-wrap videos {
+        .trailer-wrap video {
             width: 100%;
             height: auto;
             display: block;
@@ -231,6 +350,7 @@
 
         /* About Section */
         .about { background: rgba(255, 255, 255, 0.5); }
+        body.dark-mode .about { background: rgba(45, 55, 72, 0.4); }
 
         .about-content {
             max-width: 700px;
@@ -245,10 +365,11 @@
             font-weight: 300;
         }
 
-        /* videos Scenes Grid */
+        /* Scenes Grid */
         .scenes {
             background: linear-gradient(180deg, rgba(232, 228, 240, 0.3) 0%, rgba(255, 255, 255, 0.5) 100%);
         }
+        body.dark-mode .scenes { background: linear-gradient(180deg, rgba(45, 55, 72, 0.3) 0%, rgba(45, 55, 72, 0.5) 100%); }
 
         .scenes-grid {
             display: grid;
@@ -259,11 +380,12 @@
         }
 
         .scene-card {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--card-bg);
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(159, 122, 234, 0.1);
+            box-shadow: 0 10px 40px var(--shadow-color);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid var(--border-color);
         }
 
         .scene-card:hover {
@@ -271,7 +393,6 @@
             box-shadow: 0 20px 60px rgba(159, 122, 234, 0.15);
         }
 
-        /* Scene image now supports real photos */
         .scene-image {
             height: 180px;
             background-position: center;
@@ -304,8 +425,493 @@
             font-weight: 300;
         }
 
-        /* Bike Feature Section */
+        /* Map Section */
+        .map { background: rgba(255, 255, 255, 0.55); }
+        body.dark-mode .map { background: rgba(45, 55, 72, 0.45); }
+
+        .map-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .map-frame {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px var(--shadow-color);
+            background: #000;
+        }
+
+        .map-frame iframe {
+            width: 100%;
+            height: 420px;
+            border: 0;
+            display: block;
+        }
+
+        .map-side {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .map-hint {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(159, 122, 234, 0.25);
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--mountain-blue);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .pill {
+            background: rgba(45, 55, 72, 0.75);
+            color: var(--lavender);
+        }
+
+        .pill:hover {
+            background: rgba(159, 122, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .places-list {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .places-list h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--lavender-dark);
+            margin-bottom: 1rem;
+        }
+
+        .place-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        body.dark-mode .place-item { background: rgba(45, 55, 72, 0.6); }
+
+        .place-item:hover {
+            background: rgba(159, 122, 234, 0.1);
+            border-color: rgba(159, 122, 234, 0.2);
+        }
+
+        .place-item-name {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .place-item-type {
+            font-size: 0.7rem;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            padding: 0.25rem 0.6rem;
+            background: rgba(159, 122, 234, 0.1);
+            border-radius: 999px;
+        }
+
+        /* Discover Section */
+        .discover {
+            background: linear-gradient(180deg, rgba(232, 228, 240, 0.25) 0%, rgba(255, 255, 255, 0.55) 100%);
+        }
+        body.dark-mode .discover {
+            background: linear-gradient(180deg, rgba(45, 55, 72, 0.25) 0%, rgba(45, 55, 72, 0.55) 100%);
+        }
+
+        .discover-toolbar {
+            max-width: 1100px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chip {
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(159, 122, 234, 0.25);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: var(--mountain-blue);
+            transition: all 0.3s ease;
+        }
+
+        .chip:hover { background: rgba(159, 122, 234, 0.1); }
+        .chip.active {
+            background: rgba(159, 122, 234, 0.18);
+            color: var(--lavender-dark);
+            border-color: var(--lavender-dark);
+        }
+
+        .discover-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .place-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .place-card:hover { transform: translateY(-5px); }
+
+        .place-top { padding: 1.25rem 1.35rem; }
+
+        .place-title {
+            color: var(--mountain-blue);
+            letter-spacing: 2px;
+            font-size: 1.05rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .place-sub {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .place-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.85rem;
+        }
+
+        .badge {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(159, 122, 234, 0.1);
+            color: var(--lavender-dark);
+        }
+
+        .place-desc {
+            padding: 0 1.35rem 1.25rem 1.35rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .place-link {
+            display: inline-block;
+            margin: 0 1.35rem 1.25rem 1.35rem;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            background: rgba(159, 122, 234, 0.1);
+            color: var(--lavender-dark);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .place-link:hover { background: rgba(159, 122, 234, 0.2); }
+
+        /* Notes Section */
+        .notes { background: rgba(255, 255, 255, 0.6); }
+        body.dark-mode .notes { background: rgba(45, 55, 72, 0.45); }
+
+        .notes-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2rem;
+        }
+
+        .notes-editor {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--lavender-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode textarea { background: rgba(45, 55, 72, 0.75); }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--lavender-dark);
+            box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.15);
+        }
+
+        .notes-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: var(--lavender-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(159, 122, 234, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--lavender-dark);
+            color: var(--lavender-dark);
+            box-shadow: none;
+        }
+
+        .small {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .notes-list {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .note-item {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid var(--lavender-dark);
+            position: relative;
+        }
+
+        body.dark-mode .note-item { background: rgba(45, 55, 72, 0.6); }
+
+        .note-item:last-child { margin-bottom: 0; }
+
+        .note-date {
+            font-size: 0.7rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            color: var(--lavender-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .note-text {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .note-delete {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .note-item:hover .note-delete { opacity: 1; }
+        .note-delete:hover { color: #e53e3e; }
+
+        /* Comments Section */
+        .comments { background: linear-gradient(180deg, rgba(232, 228, 240, 0.3) 0%, rgba(255, 255, 255, 0.5) 100%); }
+        body.dark-mode .comments { background: linear-gradient(180deg, rgba(45, 55, 72, 0.3) 0%, rgba(45, 55, 72, 0.5) 100%); }
+
+        .comments-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .comment-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .comment-form input,
+        body.dark-mode .comment-form textarea { background: rgba(45, 55, 72, 0.75); }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--lavender-dark);
+            box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.15);
+        }
+
+        .comment-form textarea { min-height: 100px; resize: vertical; }
+
+        .comment-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 5px 25px var(--shadow-color);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--mountain-blue);
+            font-weight: 500;
+        }
+
+        .comment-date {
+            font-size: 0.7rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .comment-message {
+            font-size: 1rem;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        /* Bike Feature */
         .bike-feature { background: rgba(255, 255, 255, 0.6); }
+        body.dark-mode .bike-feature { background: rgba(45, 55, 72, 0.45); }
 
         .bike-content {
             display: flex;
@@ -317,18 +923,15 @@
             flex-wrap: wrap;
         }
 
-        /* Bike visual now uses an image */
         .bike-visual {
             width: 350px;
             height: 220px;
-            border-radius: 8px;
+            border-radius: 12px;
             position: relative;
             overflow: hidden;
-            background:
-              linear-gradient(180deg, rgba(45,55,72,0.10), rgba(45,55,72,0.25)),
-              url('images/bike.jpg') center/cover no-repeat;
-            box-shadow: 0 10px 40px rgba(159, 122, 234, 0.12);
-            border: 1px solid rgba(159, 122, 234, 0.12);
+            background: linear-gradient(180deg, rgba(45,55,72,0.10), rgba(45,55,72,0.25)), url('images/bike.jpg') center/cover no-repeat;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            border: 1px solid var(--border-color);
         }
 
         .bike-details { max-width: 400px; }
@@ -345,7 +948,7 @@
 
         .bike-details li {
             padding: 0.7rem 0;
-            border-bottom: 1px solid rgba(159, 122, 234, 0.1);
+            border-bottom: 1px solid var(--border-color);
             font-size: 0.9rem;
             color: var(--text-light);
             display: flex;
@@ -359,10 +962,11 @@
             font-size: 0.7rem;
         }
 
-        /* Text Overlays Section */
+        /* Text Overlays */
         .overlays {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(232, 228, 240, 0.3) 100%);
         }
+        body.dark-mode .overlays { background: linear-gradient(180deg, rgba(45, 55, 72, 0.5) 0%, rgba(45, 55, 72, 0.3) 100%); }
 
         .overlays-list {
             display: flex;
@@ -376,9 +980,10 @@
         .overlay-item {
             text-align: center;
             padding: 1.5rem 2.5rem;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            box-shadow: 0 5px 30px rgba(159, 122, 234, 0.08);
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 5px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
         }
 
         .overlay-item h4 {
@@ -399,11 +1004,12 @@
 
         /* Technical Specs */
         .tech-specs { background: rgba(255, 255, 255, 0.6); }
+        body.dark-mode .tech-specs { background: rgba(45, 55, 72, 0.45); }
 
         .specs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.25rem;
             max-width: 900px;
             margin: 0 auto;
         }
@@ -411,22 +1017,23 @@
         .spec-card {
             text-align: center;
             padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+            background: var(--card-bg);
+            border-radius: 12px;
             transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
         }
 
         .spec-card:hover { transform: scale(1.05); }
 
         .spec-card h4 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 300;
             color: var(--lavender-dark);
             margin-bottom: 0.5rem;
         }
 
         .spec-card p {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 2px;
             color: var(--text-light);
             text-transform: uppercase;
@@ -437,26 +1044,26 @@
         .production {
             background: linear-gradient(180deg, rgba(232, 228, 240, 0.3) 0%, rgba(255, 255, 255, 0.5) 100%);
         }
+        body.dark-mode .production { background: linear-gradient(180deg, rgba(45, 55, 72, 0.3) 0%, rgba(45, 55, 72, 0.5) 100%); }
 
-        .production-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .production-content { max-width: 800px; margin: 0 auto; }
 
         .production-block {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 5px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
         }
 
-              .production-block h4 {
-            font-size: 1rem;
+        .production-block h4 {
+            font-size: 0.9rem;
             letter-spacing: 2px;
             color: var(--mountain-blue);
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(159, 122, 234, 0.2);
+            border-bottom: 1px solid var(--border-color);
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
         }
@@ -466,6 +1073,212 @@
             color: var(--text-light);
             font-weight: 300;
             line-height: 1.9;
+        }
+
+        /* Timeline Section */
+        .timeline { background: rgba(255, 255, 255, 0.55); }
+        body.dark-mode .timeline { background: rgba(45, 55, 72, 0.45); }
+
+        .timeline-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1.25rem;
+            align-items: start;
+        }
+
+        .time {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--lavender-dark);
+            text-transform: uppercase;
+            padding-top: 0.6rem;
+        }
+
+        .timeline-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .timeline-card h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--mountain-blue);
+            margin-bottom: 0.35rem;
+        }
+
+        .timeline-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-card .meta {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+            opacity: 0.8;
+        }
+
+        /* Gallery Section */
+        .gallery { background: linear-gradient(180deg, rgba(232, 228, 240, 0.25) 0%, rgba(255, 255, 255, 0.55) 100%); }
+        body.dark-mode .gallery { background: linear-gradient(180deg, rgba(45, 55, 72, 0.25) 0%, rgba(45, 55, 72, 0.55) 100%); }
+
+        .gallery-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px var(--shadow-color);
+            transition: transform 0.35s ease;
+        }
+
+        .gallery-item:hover { transform: translateY(-6px); }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 55, 72, 0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .lightbox[aria-hidden="false"] { display: flex; }
+
+        .lightbox-img {
+            max-width: min(1200px, 95vw);
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 1px solid rgba(230, 230, 250, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Gear Section */
+        .gear { background: rgba(255, 255, 255, 0.6); }
+        body.dark-mode .gear { background: rgba(45, 55, 72, 0.45); }
+
+        .gear-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .gear-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow-color);
+        }
+
+        .gear-card h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--mountain-blue);
+            margin-bottom: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .gear-card ul { list-style: none; }
+
+        .gear-card li {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gear-card li:last-child { border-bottom: 0; }
+
+        /* Scroll Progress + Back to Top */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--lavender-dark), rgba(230, 230, 250, 0.9));
+            z-index: 3000;
+            transition: width 0.1s ease;
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--mountain-blue);
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 1200;
+        }
+
+        .back-to-top.show { display: flex; align-items: center; justify-content: center; }
+
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            background: rgba(159, 122, 234, 0.15);
+            color: var(--lavender-dark);
         }
 
         /* Footer */
@@ -493,50 +1306,116 @@
             font-family: 'Cormorant Garamond', Georgia, serif;
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--mountain-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 4000;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         /* Responsive */
+        @media (max-width: 1024px) {
+            nav { padding: 1.25rem 2.5rem; }
+            .nav-links { gap: 2rem; }
+            section { padding: 5rem 3rem; }
+        }
+
         @media (max-width: 768px) {
-            nav {
-                padding: 1rem 1.5rem;
-            }
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            
+            .hero h1 { font-size: 2.2rem; letter-spacing: 5px; }
+            .hero .subtitle { font-size: 0.75rem; letter-spacing: 4px; }
+            .hero .tagline { font-size: 1.1rem; }
+            
+            section { padding: 4rem 1.5rem; }
+            
+            .map-wrap { grid-template-columns: 1fr; }
+            .map-frame iframe { height: 320px; }
+            
+            .timeline-item { grid-template-columns: 1fr; }
+            .time { padding-top: 0; margin-bottom: 0.5rem; }
+            
+            .notes-wrap { grid-template-columns: 1fr; }
+            
+            .bike-content { flex-direction: column; }
+            .bike-visual { width: 100%; max-width: 400px; height: 200px; }
+        }
 
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-                letter-spacing: 5px;
-            }
-
-            .hero .subtitle {
-                font-size: 0.75rem;
-                letter-spacing: 4px;
-            }
-
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .bike-content {
-                flex-direction: column;
-            }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; letter-spacing: 3px; }
+            .section-title h2 { font-size: 1.4rem; }
+            .scenes-grid { grid-template-columns: 1fr; }
+            .discover-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-
 <body>
+    <!-- Scroll Progress -->
+    <div class="progress" id="progress"></div>
+
     <!-- Navigation -->
     <nav>
-        <div class="logo">SOLO BIKE WEEKEND</div>
+        <div class="logo"><a href="#top" class="logo-link">SOLO BIKE WEEKEND</a></div>
+
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#trailer">Trailer</a></li>
             <li><a href="#scenes">Scenes</a></li>
+            <li><a href="#timeline">Timeline</a></li>
+            <li><a href="#map">Map</a></li>
+            <li><a href="#discover">Discover</a></li>
+            <li><a href="#notes">Notes</a></li>
             <li><a href="#bike">Bike</a></li>
-            <li><a href="#overlays">Overlays</a></li>
             <li><a href="#production">Production</a></li>
+            <li><a href="#comments">Comments</a></li>
         </ul>
+
+        <div class="nav-actions">
+            <button class="icon-btn" id="themeToggle" aria-label="Toggle night mode" title="Night mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+
+            <button class="icon-btn hamburger" id="menuBtn" aria-label="Open menu" title="Menu">☰</button>
+        </div>
     </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+    <div class="drawer" id="drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <div class="drawer-title">Menu</div>
+            <button class="icon-btn" id="closeDrawer" aria-label="Close menu">×</button>
+        </div>
+        <a href="#about" class="drawer-link">About</a>
+        <a href="#trailer" class="drawer-link">Trailer</a>
+        <a href="#scenes" class="drawer-link">Scenes</a>
+        <a href="#timeline" class="drawer-link">Timeline</a>
+        <a href="#map" class="drawer-link">Map</a>
+        <a href="#discover" class="drawer-link">Discover</a>
+        <a href="#notes" class="drawer-link">Notes</a>
+        <a href="#bike" class="drawer-link">Bike</a>
+        <a href="#production" class="drawer-link">Production</a>
+        <a href="#comments" class="drawer-link">Comments</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero" id="top">
@@ -551,7 +1430,7 @@
         </div>
     </section>
 
-    <!-- Trailer / videos Embed -->
+    <!-- Trailer Section -->
     <section class="trailer" id="trailer">
         <div class="section-title">
             <h2>Trailer</h2>
@@ -559,11 +1438,10 @@
         </div>
 
         <div class="trailer-wrap">
-            <!-- Put your MP4 at: videos/solo-bike-weekend.mp4 -->
-            <videos controls playsinline preload="metadata" poster="images/hero.jpg">
-                <source src="videos/solo-bike-weekend.mp4" type="videos/mp4" />
-                Your browser does not support the videos tag.
-            </videos>
+            <video controls playsinline preload="metadata" poster="images/hero.jpg">
+                <source src="videos/solo-bike-weekend.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
 
@@ -577,7 +1455,7 @@
         <div class="about-content">
             <p>
                 A peaceful solo motorcycle journey through the misty hills of Shillong, Meghalaya.
-                This cinematic travel videos captures the essence of slow travel, reflection,
+                This cinematic travel video captures the essence of slow travel, reflection,
                 and connection with nature.
             </p>
             <p>
@@ -587,10 +1465,10 @@
         </div>
     </section>
 
-    <!-- videos Scenes -->
+    <!-- Scenes Section -->
     <section class="scenes" id="scenes">
         <div class="section-title">
-            <h2>videos Scenes</h2>
+            <h2>Video Scenes</h2>
             <div class="divider"></div>
         </div>
 
@@ -623,7 +1501,7 @@
                      role="img"
                      aria-label="Ward's Lake calm water reflections, Shillong"></div>
                 <div class="scene-info">
-                    <h3>3. Ward’s Lake</h3>
+                    <h3>3. Ward's Lake</h3>
                     <p>Calm reflections on water</p>
                 </div>
             </div>
@@ -670,6 +1548,152 @@
                     <h3>7. Sunset Finale</h3>
                     <p>Bike parked, lavender sky, calm fade-out</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="section-title">
+            <h2>Route & Timeline</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="timeline-wrap">
+            <div class="timeline-item">
+                <div class="time">06:10 AM</div>
+                <div class="timeline-card">
+                    <h3>Start — Madanryting</h3>
+                    <p>Cold air, visor down, first engine note in the quiet lanes.</p>
+                    <div class="meta">Focus: fog • sound: birds • movement: slow roll</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="time">08:00 AM</div>
+                <div class="timeline-card">
+                    <h3>Shillong Peak</h3>
+                    <p>Wide shots, drifting clouds, steady tripod pans.</p>
+                    <div class="meta">Lens: wide • mood: airy • pace: long takes</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="time">12:30 PM</div>
+                <div class="timeline-card">
+                    <h3>Ward's Lake</h3>
+                    <p>Water reflections, gentle footstep ambience, minimal music.</p>
+                    <div class="meta">Sound: natural • color: lavender cool</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="time">05:45 PM</div>
+                <div class="timeline-card">
+                    <h3>Sunset Finale</h3>
+                    <p>Bike parked, silhouettes, fade-out with wind and distant traffic hush.</p>
+                    <div class="meta">Transition: dissolve • ending: calm</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map" id="map">
+        <div class="section-title">
+            <h2>Interactive Map</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="map-wrap">
+            <div class="map-frame">
+                <iframe
+                    id="mapIframe"
+                    title="Google Map"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps?q=Shillong,+Meghalaya&output=embed">
+                </iframe>
+            </div>
+
+            <div class="map-side">
+                <div class="map-hint">
+                    Click a location below to view it on the embedded map, or open directly in Google Maps.
+                </div>
+
+                <div class="map-actions">
+                    <a class="pill" id="openInMaps" href="https://www.google.com/maps?q=Shillong,+Meghalaya" target="_blank" rel="noopener">
+                        Open in Google Maps
+                    </a>
+                    <button class="pill" id="copyMapLink" type="button">Copy link</button>
+                </div>
+
+                <div class="places-list">
+                    <h4>Locations</h4>
+                    <div class="place-item" data-lat="25.5788" data-lng="91.8933" data-name="Shillong Peak">
+                        <span class="place-item-name">Shillong Peak</span>
+                        <span class="place-item-type">Viewpoint</span>
+                    </div>
+                    <div class="place-item" data-lat="25.5717" data-lng="91.8833" data-name="Madanryting">
+                        <span class="place-item-name">Madanryting</span>
+                        <span class="place-item-type">Road</span>
+                    </div>
+                    <div class="place-item" data-lat="25.5667" data-lng="91.9000" data-name="Ward's Lake">
+                        <span class="place-item-name">Ward's Lake</span>
+                        <span class="place-item-type">Lake</span>
+                    </div>
+                    <div class="place-item" data-lat="25.5689" data-lng="91.9050" data-name="Don Bosco Museum">
+                        <span class="place-item-name">Don Bosco Museum</span>
+                        <span class="place-item-type">Museum</span>
+                    </div>
+                    <div class="place-item" data-lat="25.5750" data-lng="91.8950" data-name="Sweet Falls">
+                        <span class="place-item-name">Sweet Falls</span>
+                        <span class="place-item-type">Waterfall</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discover Section -->
+    <section class="discover" id="discover">
+        <div class="section-title">
+            <h2>Restaurant & Café Discovery</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="discover-toolbar">
+            <button class="chip active" data-filter="all" type="button">All</button>
+            <button class="chip" data-filter="cafe" type="button">Cafés</button>
+            <button class="chip" data-filter="restaurant" type="button">Restaurants</button>
+        </div>
+
+        <div class="discover-grid" id="placesGrid"></div>
+    </section>
+
+    <!-- Notes Section -->
+    <section class="notes" id="notes">
+        <div class="section-title">
+            <h2>Personal Notes</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="notes-wrap">
+            <div class="notes-editor">
+                <label class="label" for="noteText">Write a note (saved locally, works offline)</label>
+                <textarea id="noteText" placeholder="Weather, road condition, a quiet spot, a café to revisit..."></textarea>
+
+                <div class="notes-actions">
+                    <button class="btn" id="saveNote" type="button">Save Note</button>
+                    <button class="btn btn-ghost" id="clearNotes" type="button">Clear All</button>
+                </div>
+
+                <p class="small">Stored only on this device (localStorage). No backend needed.</p>
+            </div>
+
+            <div class="notes-list">
+                <div class="label">Saved Notes</div>
+                <div id="notesList"></div>
             </div>
         </div>
     </section>
@@ -727,7 +1751,7 @@
     <!-- Technical Specs -->
     <section class="tech-specs">
         <div class="section-title">
-            <h2>videos Specifications</h2>
+            <h2>Video Specifications</h2>
             <div class="divider"></div>
         </div>
 
@@ -793,11 +1817,472 @@
         </div>
     </section>
 
+    <!-- Comments Section -->
+    <section class="comments" id="comments">
+        <div class="section-title">
+            <h2>Public Comments</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="comments-wrap">
+            <form class="comment-form" id="commentForm">
+                <input id="commentName" type="text" maxlength="40" placeholder="Your name" required />
+                <textarea id="commentMessage" maxlength="500" placeholder="Leave a calm note..." required></textarea>
+                <button class="btn" type="submit">Post Comment</button>
+                <p class="small">Real-time via Firebase Firestore.</p>
+            </form>
+
+            <div class="comment-feed" id="commentFeed" aria-live="polite">
+                <div class="no-comments">No comments yet. Be the first to share your thoughts.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close image">×</button>
+        <img class="lightbox-img" id="lightboxImg" alt="" />
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>SOLO BIKE WEEKEND</p>
-        <p class="credits">Shillong, Meghalaya | Cinematic Travel videos</p>
+        <p class="credits">Shillong, Meghalaya | Cinematic Travel Video</p>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // ==========================================
+        // Firebase Configuration
+        // Replace with your own Firebase config
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase (uncomment after adding your config)
+        // const app = firebase.initializeApp(firebaseConfig);
+        // const db = firebase.firestore();
+
+        // ==========================================
+        // Theme Toggle (Dark/Light Mode)
+        // ==========================================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        
+        // Check for saved preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+
+        // ==========================================
+        // Mobile Drawer
+        // ==========================================
+        const menuBtn = document.getElementById('menuBtn');
+        const closeDrawer = document.getElementById('closeDrawer');
+        const drawer = document.getElementById('drawer');
+        const drawerBackdrop = document.getElementById('drawerBackdrop');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function openDrawer() {
+            drawer.classList.add('open');
+            drawerBackdrop.classList.add('open');
+            drawer.setAttribute('aria-hidden', 'false');
+            drawerBackdrop.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawerFn() {
+            drawer.classList.remove('open');
+            drawerBackdrop.classList.remove('open');
+            drawer.setAttribute('aria-hidden', 'true');
+            drawerBackdrop.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        menuBtn.addEventListener('click', openDrawer);
+        closeDrawer.addEventListener('click', closeDrawerFn);
+        drawerBackdrop.addEventListener('click', closeDrawerFn);
+        
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', closeDrawerFn);
+        });
+
+        // ==========================================
+        // Scroll Progress + Back to Top
+        // ==========================================
+        const progress = document.getElementById('progress');
+        const backToTop = document.getElementById('backToTop');
+
+        function updateProgress() {
+            const doc = document.documentElement;
+            const scrollTop = doc.scrollTop || document.body.scrollTop;
+            const scrollHeight = doc.scrollHeight - doc.clientHeight;
+            const percent = scrollHeight ? (scrollTop / scrollHeight) * 100 : 0;
+            progress.style.width = `${percent}%`;
+            backToTop.classList.toggle('show', scrollTop > 500);
+        }
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ==========================================
+        // Map Functionality
+        // ==========================================
+        const mapIframe = document.getElementById('mapIframe');
+        const openInMaps = document.getElementById('openInMaps');
+        const placeItems = document.querySelectorAll('.place-item');
+        const copyMapLink = document.getElementById('copyMapLink');
+
+        placeItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const lat = item.dataset.lat;
+                const lng = item.dataset.lng;
+                const name = item.dataset.name;
+                
+                // Update embedded map
+                const newSrc = `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
+                mapIframe.src = newSrc;
+                
+                // Update "Open in Google Maps" link
+                openInMaps.href = `https://www.google.com/maps?q=${lat},${lng}`;
+                
+                showToast(`Showing ${name} on map`);
+            });
+        });
+
+        copyMapLink.addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast('Link copied to clipboard');
+            }).catch(() => {
+                showToast('Failed to copy link');
+            });
+        });
+
+        // ==========================================
+        // Restaurant & Café Discovery Data
+        // ==========================================
+        const placesData = [
+            {
+                name: "Café Shillong",
+                type: "cafe",
+                tags: ["Coffee", "WiFi", "Mountain View"],
+                description: "Cozy café with panoramic views of the hills. Perfect for editing footage.",
+                link: "https://maps.google.com/?q=Cafe+Shillong",
+                address: "Police Bazar, Shillong"
+            },
+            {
+                name: "Mawsynram Café",
+                type: "cafe",
+                tags: ["Local", "Quiet", "Tea"],
+                description: "Hidden gem near the wettest place on earth. Great for quiet reflection.",
+                link: "https://maps.google.com/?q=Mawsynram+Cafe",
+                address: "Mawsynram Village"
+            },
+            {
+                name: "Tripura Restaurant",
+                type: "restaurant",
+                tags: ["Local Cuisine", "Authentic", "Budget"],
+                description: "Authentic Northeast Indian cuisine. Try the thukpa and momos.",
+                link: "https://maps.google.com/?q=Tripura+Restaurant+Shillong",
+                address: "Laitumkhrah, Shillong"
+            },
+            {
+                name: "The Oakwood",
+                type: "restaurant",
+                tags: ["Fine Dining", "Multi-cuisine", "Romantic"],
+                description: "Upscale dining with a calm ambiance. Great for evening meals.",
+                link: "https://maps.google.com/?q=The+Oakwood+Shillong",
+                address: "Barik, Shillong"
+            },
+            {
+                name: "Jiva Organic Café",
+                type: "cafe",
+                tags: ["Organic", "Healthy", "Artisan Coffee"],
+                description: "Farm-to-table café with organic ingredients and specialty coffee.",
+                link: "https://maps.google.com/?q=Jiva+Organic+Cafe+Shillong",
+                address: "Nongthymmai, Shillong"
+            },
+            {
+                name: "Madras Cafe",
+                type: "restaurant",
+                tags: ["South Indian", "Breakfast", "Popular"],
+                description: "Famous for idli, dosa, and filter coffee. Quick and tasty.",
+                link: "https://maps.google.com/?q=Madras+Cafe+Shillong",
+                address: "Police Bazar, Shillong"
+            }
+        ];
+
+        const placesGrid = document.getElementById('placesGrid');
+        const filterChips = document.querySelectorAll('.chip');
+
+        function renderPlaces(filter = 'all') {
+            const filtered = filter === 'all' 
+                ? placesData 
+                : placesData.filter(p => p.type === filter);
+            
+            placesGrid.innerHTML = filtered.map(place => `
+                <div class="place-card" data-type="${place.type}">
+                    <div class="place-top">
+                        <div class="place-title">${place.name}</div>
+                        <div class="place-sub">${place.address}</div>
+                        <div class="place-meta">
+                            ${place.tags.map(tag => `<span class="badge">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="place-desc">${place.description}</div>
+                    <a href="${place.link}" target="_blank" rel="noopener" class="place-link">
+                        View on Maps →
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                renderPlaces(chip.dataset.filter);
+            });
+        });
+
+        renderPlaces();
+
+        // ==========================================
+        // Personal Notes (localStorage)
+        // ==========================================
+        const noteText = document.getElementById('noteText');
+        const saveNoteBtn = document.getElementById('saveNote');
+        const clearNotesBtn = document.getElementById('clearNotes');
+        const notesList = document.getElementById('notesList');
+        const STORAGE_KEY = 'solo_bike_notes';
+
+        function getNotes() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        }
+
+        function saveNotes(notes) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        }
+
+        function renderNotes() {
+            const notes = getNotes();
+            
+            if (notes.length === 0) {
+                notesList.innerHTML = '<p class="small">No notes yet. Write your first note above.</p>';
+                return;
+            }
+
+            notesList.innerHTML = notes.map((note, index) => `
+                <div class="note-item">
+                    <div class="note-date">${note.date}</div>
+                    <div class="note-text">${escapeHtml(note.text)}</div>
+                    <button class="note-delete" data-index="${index}" title="Delete note">×</button>
+                </div>
+            `).join('');
+
+            // Add delete handlers
+            notesList.querySelectorAll('.note-delete').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = parseInt(btn.dataset.index);
+                    const notes = getNotes();
+                    notes.splice(index, 1);
+                    saveNotes(notes);
+                    renderNotes();
+                    showToast('Note deleted');
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        saveNoteBtn.addEventListener('click', () => {
+            const text = noteText.value.trim();
+            if (!text) {
+                showToast('Please write something first');
+                return;
+            }
+
+            const notes = getNotes();
+            const newNote = {
+                text,
+                date: new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+
+            notes.unshift(newNote);
+            saveNotes(notes);
+            noteText.value = '';
+            renderNotes();
+            showToast('Note saved');
+        });
+
+        clearNotesBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete all notes? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderNotes();
+                showToast('All notes cleared');
+            }
+        });
+
+        renderNotes();
+
+        // ==========================================
+        // Comments (Firebase Firestore)
+        // ==========================================
+        const commentForm = document.getElementById('commentForm');
+        const commentFeed = document.getElementById('commentFeed');
+
+        // Uncomment to enable Firebase comments:
+        /*
+        // Listen for real-time comments
+        db.collection('comments')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(snapshot => {
+                if (snapshot.empty) {
+                    commentFeed.innerHTML = '<div class="no-comments">No comments yet. Be the first to share your thoughts.</div>';
+                    return;
+                }
+                
+                commentFeed.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-name">${escapeHtml(data.name)}</span>
+                                <span class="comment-date">${data.createdAt?.toDate?.().toLocaleDateString() || 'Just now'}</span>
+                            </div>
+                            <div class="comment-message">${escapeHtml(data.message)}</div>
+                        </div>
+                    `;
+                }).join('');
+            }, error => {
+                console.error('Error loading comments:', error);
+                commentFeed.innerHTML = '<div class="no-comments">Unable to load comments. Please check your connection.</div>';
+            });
+
+        // Submit new comment
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('commentName').value.trim();
+            const message = document.getElementById('commentMessage').value.trim();
+            
+            if (!name || !message) return;
+
+            try {
+                await db.collection('comments').add({
+                    name,
+                    message,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                commentForm.reset();
+                showToast('Comment posted');
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                showToast('Failed to post comment');
+            }
+        });
+        */
+
+        // Fallback demo comments (remove when Firebase is enabled)
+        const demoComments = [
+            { name: "TravelLover", message: "The lavender color grading is absolutely stunning! Reminds me of my own trip to Meghalaya.", date: "Dec 15, 2024" },
+            { name: "CinemaEnthusiast", message: "Slow pacing, beautiful cinematography. Would love to see more of your work!", date: "Dec 14, 2024" }
+        ];
+
+        commentFeed.innerHTML = demoComments.map(comment => `
+            <div class="comment-item">
+                <div class="comment-header">
+                    <span class="comment-name">${comment.name}</span>
+                    <span class="comment-date">${comment.date}</span>
+                </div>
+                <div class="comment-message">${comment.message}</div>
+            </div>
+        `).join('');
+
+        // ==========================================
+        // Toast Notification
+        // ==========================================
+        const toast = document.getElementById('toast');
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==========================================
+        // Keyboard Shortcuts
+        // ==========================================
+        document.addEventListener('keydown', (e) => {
+            // ESC to close drawer/lightbox
+            if (e.key === 'Escape') {
+                closeDrawerFn();
+                const lightbox = document.getElementById('lightbox');
+                lightbox.setAttribute('aria-hidden', 'true');
+                lightbox.style.display = 'none';
+            }
+        });
+
+        // ==========================================
+        // Smooth Scroll for Anchor Links
+        // ==========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
