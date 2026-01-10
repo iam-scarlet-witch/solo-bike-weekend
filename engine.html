@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Solo Bike Weekend</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo"><a href="#top" class="logo-link">SOLO BIKE WEEKEND</a></div>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#lean">Lean</a></li>
+        <li><a href="#excuses">Excuses</a></li>
+        <li><a href="#gearcheck">Gear</a></li>
+        <li><a href="#speed">Speed</a></li>
+        <li><a href="#sounds">Sounds</a></li>
+        <li><a href="#corners">Corners</a></li>
+    </ul>
+    <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="icon-btn hamburger" id="menuBtn" aria-label="Open menu">☰</button>
+    </div>
+</nav>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <span class="drawer-title">Menu</span>
+        <button class="icon-btn" id="closeDrawer" aria-label="Close menu">×</button>
+    </div>
+    <a href="#about" class="drawer-link">About</a>
+    <a href="#lean" class="drawer-link">Lean Simulator</a>
+    <a href="#excuses" class="drawer-link">Excuses</a>
+    <a href="#gearcheck" class="drawer-link">Gear Check</a>
+    <a href="#speed" class="drawer-link">Speed</a>
+    <a href="#sounds" class="drawer-link">Sounds</a>
+    <a href="#corners" class="drawer-link">Corners</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+    <div class="hero-content">
+        <h1>SOLO BIKE WEEKEND</h1>
+        <p class="subtitle">A Cinematic Journey</p>
+        <p class="tagline">"Ride slow. Breathe deep."</p>
+        <p class="location">Shillong, Meghalaya</p>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about alt-bg" id="about">
+    <div class="section-title">
+        <h2>About This Project</h2>
+        <div class="divider"></div>
+    </div>
+    <div class="about-content">
+        <p>A peaceful solo motorcycle journey through the misty hills of Shillong, Meghalaya.</p>
+        <p>Slow travel. Reflection. Mountains. Silence.</p>
+    </div>
+</section>
+
+<!-- LEAN -->
+<section class="lean-section" id="lean">
+    <div class="section-title">
+        <h2>Lean Angle Simulator</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="lean-wrap">
+        <div class="lean-visual">
+            <div class="road">
+                <div class="road-line"></div>
+                <div class="road-line"></div>
+                <div class="road-line"></div>
+            </div>
+
+            <div class="bike-container" id="bikeContainer">
+                <div class="bike">
+                    <div class="wheel front"></div>
+                    <div class="frame"></div>
+                    <div class="wheel rear"></div>
+                </div>
+            </div>
+
+            <div class="angle-display"><span id="angleValue">0</span>°</div>
+        </div>
+
+        <div class="lean-controls">
+            <label class="label" for="leanSlider">Drag to lean</label>
+            <input type="range" id="leanSlider" min="-45" max="45" value="0">
+        </div>
+    </div>
+</section>
+
+<!-- EXCUSES -->
+<section class="excuses-section alt-bg" id="excuses">
+    <div class="section-title">
+        <h2>Rider Excuses</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="excuses-wrap">
+        <div class="excuse-card">
+            <div class="excuse-icon">🏍️</div>
+            <div class="excuse-text" id="excuseText">"I took the scenic route."</div>
+        </div>
+        <button class="btn" id="generateExcuse">Generate Excuse</button>
+    </div>
+</section>
+
+<!-- GEAR -->
+<section class="gear-section" id="gearcheck">
+    <div class="section-title">
+        <h2>Gear Check</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="gear-wrap">
+        <div class="timer-display"><span id="timerValue">0.00</span>s</div>
+        <div class="gear-grid" id="gearGrid"></div>
+        <div class="gear-actions">
+            <button class="btn" id="startGearChallenge">Start</button>
+            <button class="btn btn-ghost" id="resetGearChallenge">Reset</button>
+        </div>
+    </div>
+</section>
+
+<!-- SPEED -->
+<section class="speed-section alt-bg" id="speed">
+    <div class="section-title">
+        <h2>Speed Check</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="speed-wrap">
+        <div class="speedometer">
+            <div class="speed-dial">
+                <div class="speed-needle" id="speedNeedle"></div>
+                <div class="speed-center"></div>
+            </div>
+            <div class="speed-value"><span id="speedValue">0</span> km/h</div>
+        </div>
+
+        <input type="range" id="speedSlider" min="0" max="200" value="0">
+    </div>
+</section>
+
+<div class="modal" id="speedWarning">
+    <div class="modal-content">
+        <h3>⚠️ SLOW DOWN</h3>
+        <p>Speed exceeds safe limit</p>
+        <button class="btn" id="closeSpeedWarning">OK</button>
+    </div>
+</div>
+
+<!-- SOUNDS -->
+<section class="sounds-section" id="sounds">
+    <div class="section-title">
+        <h2>Hear The Bike</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="sounds-wrap">
+        <div class="visualizer" id="visualizer">
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+        </div>
+
+        <div class="sound-display">Current: <span id="currentSound">Idle</span></div>
+        <div class="sound-buttons">
+            <button class="sound-btn" data-sound="Idle">Idle</button>
+            <button class="sound-btn" data-sound="Rev">Rev</button>
+            <button class="sound-btn" data-sound="Accelerate">Accelerate</button>
+            <button class="sound-btn" data-sound="Brake">Brake</button>
+        </div>
+    </div>
+</section>
+
+<!-- CORNERS -->
+<section class="corner-section alt-bg" id="corners">
+    <div class="section-title">
+        <h2>Corner Rating</h2>
+        <div class="divider"></div>
+    </div>
+
+    <div class="corner-wrap">
+        <div class="wheel-container">
+            <div class="wheel rating-wheel" id="ratingWheel"></div>
+            <div class="wheel-pointer">▼</div>
+        </div>
+        <button class="btn" id="spinWheel">Spin</button>
+        <div class="result-rating">Rating: <span id="resultRating">?</span>/10</div>
+    </div>
+</section>
+
+<div id="toast" class="toast"></div>
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<footer>
+    <p>SOLO BIKE WEEKEND</p>
+    <p class="footer-note">Ride safe. Ride happy.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
