@@ -1280,6 +1280,23 @@
             background: rgba(159, 122, 234, 0.15);
             color: var(--lavender-dark);
         }
+.engine-frame {
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 50px var(--shadow-color);
+    background: black;
+}
+
+.engine-frame iframe {
+    width: 100%;
+    height: 720px;
+    border: none;
+    display: block;
+    background: black;
+}
 
         /* Footer */
         footer {
@@ -1387,6 +1404,8 @@
             <li><a href="#bike">Bike</a></li>
             <li><a href="#production">Production</a></li>
             <li><a href="#comments">Comments</a></li>
+<li><a href="#ride">Ride</a></li>
+
         </ul>
 
         <div class="nav-actions">
@@ -1414,7 +1433,7 @@
         <a href="#notes" class="drawer-link">Notes</a>
         <a href="#bike" class="drawer-link">Bike</a>
         <a href="#production" class="drawer-link">Production</a>
-        <a href="#comments" class="drawer-link">Comments</a>
+        <a href="#ride" class="drawer-link">Ride</a>
     </div>
 
     <!-- Hero Section -->
@@ -1722,7 +1741,17 @@
     </section>
 
     <!-- Text Overlays -->
-    <section class="overlays" id="overlays">
+    <section class="engine-section" id="ride">
+  <div class="section-title">
+    <h2>Ride Experience</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="engine-frame">
+    <iframe src="engine.html" title="Ride Simulator"></iframe>
+  </div>
+</section>
+
         <div class="section-title">
             <h2>Text Overlays</h2>
             <div class="divider"></div>
